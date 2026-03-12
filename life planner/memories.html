@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Memories</title>
+
+<style>
+
+body{
+background:#e23a84;
+font-family:Arial;
+margin:0;
+display:flex;
+justify-content:center;
+}
+
+.container{
+width:380px;
+background:#f4eaea;
+min-height:100vh;
+padding:25px;
+text-align:center;
+}
+
+h1{
+color:#e23a84;
+font-family:cursive;
+}
+
+.subtitle{
+font-size:13px;
+color:#b57c8a;
+margin-bottom:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+margin-bottom:25px;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:6px 0;
+border-radius:10px;
+border:1px solid #e0b3c0;
+}
+
+.emoji{
+margin:10px 0;
+}
+
+.emoji span{
+font-size:22px;
+margin:5px;
+cursor:pointer;
+}
+
+button{
+background:#e23a84;
+color:white;
+border:none;
+padding:12px;
+width:90%;
+border-radius:20px;
+font-size:16px;
+cursor:pointer;
+}
+
+.memory{
+background:white;
+padding:15px;
+border-radius:15px;
+margin-bottom:20px;
+position:relative;
+}
+
+.memory img{
+width:100%;
+border-radius:10px;
+margin-top:10px;
+}
+
+.delete{
+position:absolute;
+right:10px;
+top:5px;
+cursor:pointer;
+color:#ff4d6d;
+font-size:18px;
+}
+
+.date{
+font-size:12px;
+color:#999;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>My Memories</h1>
+<p class="subtitle">Little moments that mattered.</p>
+
+<div class="card">
+
+<input id="memoryText" placeholder="What do you want to remember today?">
+
+<input type="file" id="photoFile">
+
+<div class="emoji">
+<span onclick="setMood('😊')">😊</span>
+<span onclick="setMood('😍')">😍</span>
+<span onclick="setMood('💖')">💖</span>
+<span onclick="setMood('🌙')">🌙</span>
+<span onclick="setMood('🌸')">🌸</span>
+</div>
+
+<button onclick="saveMemory()">Save Memory</button>
+
+</div>
+
+<div id="memoryList"></div>
+
+</div>
+
+<script>
+
+let memories = JSON.parse(localStorage.getItem("memories")) || []
+let mood=""
+
+function setMood(m){
+mood=m
+}
+
+function saveMemory(){
+
+let text=document.getElementById("memoryText").value
+let file=document.getElementById("photoFile").files[0]
+
+if(text==="") return
+
+let reader=new FileReader()
+
+reader.onload=function(){
+
+let memory={
+text:text,
+photo:reader.result,
+mood:mood,
+date:new Date().toLocaleDateString()
+}
+
+memories.push(memory)
+
+localStorage.setItem("memories",JSON.stringify(memories))
+
+renderMemories()
+
+document.getElementById("memoryText").value=""
+document.getElementById("photoFile").value=""
+
+}
+
+if(file){
+reader.readAsDataURL(file)
+}else{
+
+let memory={
+text:text,
+photo:"",
+mood:mood,
+date:new Date().toLocaleDateString()
+}
+
+memories.push(memory)
+localStorage.setItem("memories",JSON.stringify(memories))
+renderMemories()
+
+}
+
+}
+
+function renderMemories(){
+
+let list=document.getElementById("memoryList")
+list.innerHTML=""
+
+memories.forEach((m,index)=>{
+
+let div=document.createElement("div")
+div.className="memory"
+
+div.innerHTML=`
+<div class="delete">✖</div>
+<div class="date">${m.date}</div>
+<p>${m.mood} ${m.text}</p>
+${m.photo ? `<img src="${m.photo}">` : ""}
+`
+
+div.querySelector(".delete").onclick=function(){
+memories.splice(index,1)
+localStorage.setItem("memories",JSON.stringify(memories))
+renderMemories()
+}
+
+list.appendChild(div)
+
+})
+
+}
+
+renderMemories()
+
+</script>
+</script>
+
+<div class="navbar">
+<a href="home.html">🏠 Home</a>
+<a href="todo.html">✅ To-Do</a>
+<a href="memories.html">🖼 Memories</a>
+<a href="journal.html">📓 Journal</a>
+
+<a href="tracker.html">📊 Tracker</a>
+</div>
+
+<style>
+.navbar{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:10px;
+border-top:1px solid #ddd;
+}
+
+.navbar a{
+text-decoration:none;
+color:#e23a84;
+font-size:14px;
+}
+</style>
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBTPvkhb9J8UCXQBVUhxl2zKS6p9RCzSzQ",
+  authDomain: "life-planner-3251d.firebaseapp.com",
+  projectId: "life-planner-3251d",
+  storageBucket: "life-planner-3251d.firebasestorage.app",
+  messagingSenderId: "766725878467",
+  appId: "1:766725878467:web:fe709b84b28af7e504a876",
+  measurementId: "G-J05ZXFFYFV"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+console.log("Firebase connected");
+</script>
+
+</body>
+</html>
+
