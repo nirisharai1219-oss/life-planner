@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cute To Do List</title>
+
+<style>
+
+body{
+background:#e23a84;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.container{
+background:#efe5e5;
+width:360px;
+padding:30px;
+border-radius:40px;
+text-align:center;
+box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+h1{
+color:#e23a84;
+font-family:cursive;
+}
+
+.bow{
+font-size:22px;
+margin-bottom:20px;
+}
+
+.task{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin:12px 0;
+border-bottom:1px solid #d7a5a5;
+padding-bottom:6px;
+}
+
+.heart{
+margin-right:8px;
+}
+
+.task span{
+flex:1;
+text-align:left;
+outline:none;
+}
+
+.delete{
+color:#ff4d6d;
+cursor:pointer;
+font-size:20px;
+}
+
+.addBtn{
+margin-top:25px;
+background:#e23a84;
+color:white;
+border:none;
+padding:12px;
+border-radius:25px;
+font-size:16px;
+cursor:pointer;
+width:100%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>To-Do List</h1>
+
+<div class="bow">🎀</div>
+
+<div id="taskList"></div>
+
+<button class="addBtn" onclick="addTask()">+ Add To-Do</button>
+
+</div>
+
+<script>
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || []
+
+function saveTasks(){
+localStorage.setItem("tasks",JSON.stringify(tasks))
+}
+
+function renderTasks(){
+
+let list=document.getElementById("taskList")
+list.innerHTML=""
+
+tasks.forEach((task,index)=>{
+
+let div=document.createElement("div")
+div.className="task"
+
+div.innerHTML=`
+<div class="heart">💞</div>
+<span contenteditable="true">${task}</span>
+<div class="delete">✖</div>
+`
+
+div.querySelector(".delete").onclick=function(){
+tasks.splice(index,1)
+saveTasks()
+renderTasks()
+}
+
+div.querySelector("span").oninput=function(){
+tasks[index]=this.innerText
+saveTasks()
+}
+
+list.appendChild(div)
+
+})
+
+}
+
+function addTask(){
+
+let text=prompt("Enter your task")
+
+if(!text) return
+
+tasks.push(text)
+
+saveTasks()
+renderTasks()
+
+}
+
+renderTasks()
+
+
+</script>
+
+<div class="navbar">
+<a href="home.html">🏠 Home</a>
+<a href="todo.html">✅ To-Do</a>
+<a href="memories.html">🖼 Memories</a>
+<a href="journal.html">📓 Journal</a>
+
+<a href="tracker.html">📊 Tracker</a>
+</div>
+
+<style>
+.navbar{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:10px;
+border-top:1px solid #ddd;
+}
+
+.navbar a{
+text-decoration:none;
+color:#e23a84;
+font-size:14px;
+}
+</style>
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBTPvkhb9J8UCXQBVUhxl2zKS6p9RCzSzQ",
+  authDomain: "life-planner-3251d.firebaseapp.com",
+  projectId: "life-planner-3251d",
+  storageBucket: "life-planner-3251d.firebasestorage.app",
+  messagingSenderId: "766725878467",
+  appId: "1:766725878467:web:fe709b84b28af7e504a876",
+  measurementId: "G-J05ZXFFYFV"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+console.log("Firebase connected");
+</script>
+
+</body>
+</html>
+
+
+</script>
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBTPvkhb9J8UCXQBVUhxl2zKS6p9RCzSzQ",
+  authDomain: "life-planner-3251d.firebaseapp.com",
+  projectId: "life-planner-3251d",
+  storageBucket: "life-planner-3251d.firebasestorage.app",
+  messagingSenderId: "766725878467",
+  appId: "1:766725878467:web:fe709b84b28af7e504a876",
+  measurementId: "G-J05ZXFFYFV"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+console.log("Firebase connected");
+</script>
+
+</body>
+</html>
