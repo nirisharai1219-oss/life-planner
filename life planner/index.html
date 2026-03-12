@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glowzel</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f3c9d0;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.phone{
+width:380px;
+height:650px;
+background:#e7c6cc;
+border-radius:20px;
+padding:20px;
+box-sizing:border-box;
+}
+
+.topbar{
+background:#e23a84;
+color:white;
+padding:12px;
+border-radius:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-family:cursive;
+font-size:22px;
+}
+
+.center{
+text-align:center;
+margin-top:40px;
+}
+
+.center h2{
+color:#e23a84;
+margin-bottom:5px;
+}
+
+.date{
+color:#555;
+font-size:14px;
+margin-bottom:10px;
+}
+
+.quote{
+color:#a06a7a;
+margin-top:10px;
+}
+
+.moodTitle{
+margin-top:40px;
+font-weight:bold;
+}
+
+.moods{
+display:flex;
+justify-content:space-between;
+margin-top:15px;
+}
+
+.mood{
+background:white;
+padding:10px;
+border-radius:12px;
+font-size:25px;
+cursor:pointer;
+width:50px;
+text-align:center;
+box-shadow:0 3px 6px rgba(0,0,0,0.1);
+}
+
+.selected{
+background:#ffd6e7;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="phone">
+
+<div class="topbar">
+<span>🤍</span>
+<div class="logo">Glowzel</div>
+<span>🔔</span>
+</div>
+
+<div class="center">
+
+<h2>💖 Hi Neha 👋</h2>
+
+<div class="date" id="date"></div>
+
+<div class="quote" id="quote"></div>
+
+<div class="moodTitle">How do you feel today?</div>
+
+<div class="moods">
+
+<div class="mood" onclick="selectMood(this)">😞</div>
+<div class="mood" onclick="selectMood(this)">😐</div>
+<div class="mood" onclick="selectMood(this)">🙂</div>
+<div class="mood" onclick="selectMood(this)">😊</div>
+<div class="mood" onclick="selectMood(this)">🤩</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let quotes = [
+
+"Small steps still move you forward 🌱",
+"You are stronger than you think 💪",
+"Progress is progress no matter how small 🌸",
+"Take a deep breath and keep going 🌼",
+"Every day is a fresh start 🌞"
+
+]
+
+function setDate(){
+
+let today = new Date()
+
+let options = { weekday:'long', year:'numeric', month:'long', day:'numeric' }
+
+document.getElementById("date").innerText = today.toLocaleDateString("en-US",options)
+
+}
+
+function setQuote(){
+
+let random = Math.floor(Math.random()*quotes.length)
+
+document.getElementById("quote").innerText = quotes[random]
+
+}
+
+function selectMood(el){
+
+document.querySelectorAll(".mood").forEach(m=>m.classList.remove("selected"))
+
+el.classList.add("selected")
+
+localStorage.setItem("mood",el.innerText)
+
+}
+
+function loadMood(){
+
+let saved = localStorage.getItem("mood")
+
+if(!saved) return
+
+document.querySelectorAll(".mood").forEach(m=>{
+
+if(m.innerText===saved) m.classList.add("selected")
+
+})
+
+}
+
+setDate()
+setQuote()
+loadMood()
+
+</script>
+
+<div class="navbar">
+<a href="home.html">🏠 Home</a>
+<a href="todo.html">✅ To-Do</a>
+<a href="memories.html">🖼 Memories</a>
+<a href="journal.html">📓 Journal</a>
+<a href="tracker.html">📊 Tracker</a>
+</div>
+
+<style>
+.navbar{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:10px;
+border-top:1px solid #ddd;
+}
+
+.navbar a{
+text-decoration:none;
+color:#e23a84;
+font-size:14px;
+}
+</style>
+
+
+
+
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBTPvkhb9J8UCXQBVUhxl2zKS6p9RCzSzQ",
+  authDomain: "life-planner-3251d.firebaseapp.com",
+  projectId: "life-planner-3251d",
+  storageBucket: "life-planner-3251d.firebasestorage.app",
+  messagingSenderId: "766725878467",
+  appId: "1:766725878467:web:fe709b84b28af7e504a876",
+  measurementId: "G-J05ZXFFYFV"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+console.log("Firebase connected");
+</script>
+
+</body>
+</html>
